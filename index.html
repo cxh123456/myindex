@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>xiaohui的个人主页</title>
+    <link rel="stylesheet" href="css.css">
+    <script src="jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<!--header-->
+<div class="header" id="head">
+    <div class="headbox"></div>
+    <div class="headcontent center">
+        <div class="nav" id="nav">
+            <p class="name">xiaohui</p>
+            <ul id="nav-ul">
+                <li class="current"><a href="#head">首页</a></li>
+                <li><a href="#about">关于我</a></li>
+                <li><a href="#hobby">兴趣</a></li>
+                <li><a href="#contact">联系我</a></li>
+            </ul>
+        </div>
+        <h1>Welcome!</h1>
+        <p class="introduce">第一个自己设计制作的个人主页，没有技术大牛的经验分享，没有绚丽多彩的故事旅途，只有一个简单真实的我。</p>
+    </div>
+</div>
+
+<!--about me-->
+<div class="aboutme" id="about">
+    <div class="center">
+        <p class="title">陈晓惠</p>
+        <p class="content">
+            1995年4月/金牛座/福州<br/>教育背景：集美大学/电子科学与技术<br/>择业迷途：偏硬件方向转行，大三下开始学习产品方向的相关知识，<br/>暑假找到公司实习，与前端工作人员接触，了解前端这个岗位，<br/>大四上参加秋招并思考就业方向，之后才开始前端的学习,<br/>似乎方向的确定有点晚，不过我会抱着热情学下去
+        </p>
+        <div class="girl">
+            <img src="imgs/girl.png" alt="">
+        </div>
+    </div>
+</div>
+
+<!--hobbies-->
+<div class="hobbies" id="hobby">
+    <div class="center">
+        <div class="hamonica">
+            <img src="imgs/harmonica.png" alt="">
+            <p>
+                有时候，一个人，一把琴，一缕清风，足矣<br/>从小学开始接触口琴，时不时的会抄个谱子吹个曲子<br/>吹了这么久并没有特别的厉害，自己开心就好
+            </p>
+        </div>
+        <div class="volleyball">
+            <p>
+                有时候，一群人，一颗球，一把汗水，足矣<br/>大学开始接触排球，认识了一群人，<br/>曾经打球到半夜十二点然后兴奋失眠，<br/>为了比赛的一颗球不顾一切的向前扑去
+            </p>
+            <img src="imgs/playground.png" alt="">
+        </div>
+    </div>
+</div>
+
+<!--contact me-->
+<div class="contactme" id="contact">
+    <div class="headtop">
+        <img src="imgs/headshot.png" alt="">
+    </div>
+    <h1>Contact Me</h1>
+    <p>
+        Email:xiaohuiown@163.com<br/>QQ:1844638665
+    </p>
+</div>
+</body>
+</html>
+<script>
+    var head_top = document.getElementById("head").offsetTop;
+    var about_top = document.getElementById("about").offsetTop;
+    var hobby_top = document.getElementById("hobby").offsetTop;
+    var contact_top = document.getElementById("contact").offsetTop;
+    var arry = { 0 : head_top , 1 : about_top , 2 : hobby_top , 3 : contact_top};
+    var ul = document.getElementById("nav-ul");
+    var ullis = ul.children;
+    var target = 0, leader = 0;
+    var timer = null;
+
+//    页面滚动事件
+    window.onscroll = function(){
+//        alert("哈哈");
+        var scrollTop = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset;
+        if( scrollTop < arry[1]){
+            for ( var i = 0 ; i < ullis.length ; i++){
+                ullis[i].className = "";
+            }
+            ullis[0].className = "current";
+        }else if(scrollTop < arry[2]){
+            for ( var i = 0 ; i < ullis.length ; i++){
+                ullis[i].className = "";
+            }
+            ullis[1].className = "current";
+        }else if(scrollTop < arry[3]){
+            for ( var i = 0 ; i < ullis.length ; i++){
+                ullis[i].className = "";
+            }
+            ullis[2].className = "current";
+        }else{
+            for ( var i = 0 ; i < ullis.length ; i++){
+                ullis[i].className = "";
+            }
+            ullis[3].className = "current";
+        }
+        $(function(){
+//        固定导航栏
+            var topHeight = $(".headbox").height() - $(".nav").height();
+            var docScrollTop = $(document).scrollTop();
+            if( docScrollTop >= topHeight ){
+                $(".nav").css({
+                    "position" : "fixed",
+                    "top" : 0,
+                    "left" : "auto"
+                })
+            }
+            else{
+                $(".nav").css({
+                    "position" : "absolute",
+                    "top" : "-54px",
+                    "left" : 0
+                });
+            }
+        });}
+
+//   鼠标点击导航栏事件
+    for ( var i = 0 ; i < ullis.length ; i++){
+
+        ullis[i].index = i;
+        ullis[i].onclick = function (){
+            clearInterval(timer);
+            target = arry[this.index] + 1;  // +1 是为了不受页面滚动事件条件影响，因为目标位置和实际位置不会相等
+            timer = setInterval(function(){
+                leader = leader + (target - leader) / 10;
+                window.scrollTo( 0 , leader );
+
+//          判断到达位置后要清掉定时器
+//          target 和 leader 不会相等
+                if(Math.abs(leader - target) < 1){
+                    clearInterval(timer);
+                }
+
+            },10);
+
+//       标签点击后类名改变
+            for ( var i = 0 ; i < ullis.length ; i++){
+                ullis[i].className = "";
+            }
+            this.className = "current";
+
+        }
+
+    }
+
+</script>
